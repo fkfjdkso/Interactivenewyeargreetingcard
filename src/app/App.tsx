@@ -61,6 +61,7 @@ export default function App() {
                 src={`${import.meta.env.BASE_URL}video.mp4`}
                 autoPlay
                 playsInline
+                muted
                 preload="auto"
                 onEnded={handleVideoComplete}
                 className="w-full h-full object-contain"
