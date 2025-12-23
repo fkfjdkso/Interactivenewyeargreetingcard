@@ -48,7 +48,7 @@ export default function App() {
             <ChristmasTree key="tree" onGiftClick={handleGiftClick} />
           )}
 
-          {/* 4. Вставка видео-слоя */}
+         {/* Состояние с видео YouTube */}
           {state === 'video' && (
             <motion.div 
               key="video-player"
@@ -57,21 +57,23 @@ export default function App() {
               exit={{ opacity: 0 }}
               className="fixed inset-0 z-50 flex items-center justify-center bg-black"
             >
-              <video
-                src={`${import.meta.env.BASE_URL}video.mp4`}
-                autoPlay
-                playsInline
-                muted
-                preload="auto"
-                onEnded={handleVideoComplete}
-                className="w-full h-full object-contain"
-              />
-              {/* Кнопка "Пропустить" на случай, если видео не грузится */}
+              <iframe
+                width="100%"
+                height="100%"
+                src={`https://www.youtube.com/embed/ANtUdx6QJSU?autoplay=1&controls=0&rel=0&showinfo=0&enablejsapi=1`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                className="pointer-events-none" // Чтобы нельзя было поставить на паузу
+              ></iframe>
+
+              {/* Кнопка "Далее", так как отследить конец видео в iframe без библиотек сложно */}
               <button 
                 onClick={handleVideoComplete}
-                className="absolute bottom-10 right-10 text-white/50 border border-white/20 px-4 py-2 rounded-lg hover:bg-white/10 transition-colors"
+                className="absolute bottom-10 right-10 z-[60] bg-white/20 backdrop-blur-md text-white border border-white/30 px-6 py-3 rounded-full hover:bg-white/30 transition-all font-bold"
               >
-                Пропустить
+                Открыть открытку →
               </button>
             </motion.div>
           )}
