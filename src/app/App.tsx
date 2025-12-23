@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AnimatePresence } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react'; // Добавил motion для анимации появления видео
 import { SnowfallBackground } from './components/SnowfallBackground';
 import { DecorativeElements } from './components/DecorativeElements';
 import { ChristmasLights } from './components/ChristmasLights';
@@ -8,13 +8,20 @@ import { GiftOpening } from './components/GiftOpening';
 import { GreetingCard } from './components/GreetingCard';
 import { Fireworks } from './components/Fireworks';
 
-type AppState = 'tree' | 'opening' | 'greeting' | 'fireworks';
+// 1. Добавляем 'video' в типы состояний
+type AppState = 'tree' | 'video' | 'opening' | 'greeting';
 
 export default function App() {
   const [state, setState] = useState<AppState>('tree');
   const [showFireworks, setShowFireworks] = useState(false);
 
+  // 2. При клике на подарок теперь включаем видео
   const handleGiftClick = () => {
+    setState('video');
+  };
+
+  // 3. Функция, которая сработает после окончания видео
+  const handleVideoComplete = () => {
     setState('opening');
   };
 
@@ -24,8 +31,6 @@ export default function App() {
 
   const handleCelebrate = () => {
     setShowFireworks(true);
-    
-    // Hide fireworks after 6 seconds but keep greeting visible
     setTimeout(() => {
       setShowFireworks(false);
     }, 6000);
@@ -33,20 +38,40 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-blue-950 via-blue-900 to-blue-950">
-      {/* Background snow animation - always visible */}
       <SnowfallBackground />
-      
-      {/* Christmas lights garland */}
       <ChristmasLights />
-      
-      {/* Decorative corner elements */}
       <DecorativeElements />
       
-      {/* Main content */}
       <div className="relative z-10">
         <AnimatePresence mode="wait">
           {state === 'tree' && (
             <ChristmasTree key="tree" onGiftClick={handleGiftClick} />
+          )}
+
+          {/* 4. Вставка видео-слоя */}
+          {state === 'video' && (
+            <motion.div 
+              key="video-player"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+            >
+              <video
+                src="./video.mp4" // Убедитесь, что файл лежит в папке public
+                autoPlay
+                playsInline
+                onEnded={handleVideoComplete}
+                className="w-full h-full object-contain"
+              />
+              {/* Кнопка "Пропустить" на случай, если видео не грузится */}
+              <button 
+                onClick={handleVideoComplete}
+                className="absolute bottom-10 right-10 text-white/50 border border-white/20 px-4 py-2 rounded-lg hover:bg-white/10 transition-colors"
+              >
+                Пропустить
+              </button>
+            </motion.div>
           )}
           
           {state === 'opening' && (
@@ -59,7 +84,6 @@ export default function App() {
         </AnimatePresence>
       </div>
 
-      {/* Fireworks overlay */}
       <AnimatePresence>
         {showFireworks && <Fireworks key="fireworks" />}
       </AnimatePresence>
