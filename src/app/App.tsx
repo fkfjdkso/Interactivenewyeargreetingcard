@@ -58,10 +58,10 @@ export default function App() {
               className="fixed inset-0 z-50 flex items-center justify-center bg-black"
             >
               <video
-               src={`${import.meta.env.BASE_URL}video.mp4`} // Это автоматически подставит правильный путь репозитория
+                src={`${import.meta.env.BASE_URL}video.mp4`}
                 autoPlay
                 playsInline
-                muted // Добавьте это для теста! Браузеры часто блокируют видео со звуком
+                preload="auto"
                 onEnded={handleVideoComplete}
                 className="w-full h-full object-contain"
               />
