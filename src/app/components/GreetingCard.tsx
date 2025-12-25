@@ -66,7 +66,7 @@ export function GreetingCard({ onCelebrate }: GreetingCardProps) {
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               <span className="relative z-10 flex items-center gap-2">
-                Запустить праздник! 🎉
+                Поздравляю! 🎉
               </span>
               
               <motion.div
